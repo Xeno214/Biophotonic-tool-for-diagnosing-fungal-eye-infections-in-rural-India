@@ -1,0 +1,40 @@
+import sys
+import os
+from PIL import Image
+from PIL import ImageChops
+import datetime
+if len(sys.argv) < 2:
+print("Usage: ", sys.argv[0], " <image file with fungi>")
+sys.exit(1)
+if not os.path.exists(sys.argv[1]):
+print("%s does not exist" % (sys.argv[1],))
+sys.exit(1)
+if not os.path.isfile(sys.argv[1]):
+print("%s is not an ordinary file" % (sys.argv[1],))
+sys.exit(1)
+if not os.access(sys.argv[1], os.R_OK):
+print("%s is not readable" % (sys.argv[1],))
+sys.exit(1)
+base_image = Image.open("base.jpg") # Base image picture.
+base_image.show() # Display base image.
+fungi_image = Image.open(sys.argv[1]) # Image with fungi.
+fungi_image.show() # Display image with fungi.
+differences = ImageChops.difference(base_image, fungi_image) # Identify differences
+between the two images.
+74
+differences.show() # Display the differences between the two images.
+today = datetime.datetime.today()
+timestamp = today.strftime('%y-%m-%d-%-H-%-M-%-S')
+differences.save("image-difference-output-" + timestamp + ".jpg") # Saves the image
+with the differences.
+rgb_differences = differences.convert('RGB') # Converts the image to RGB values.
+rgb_list = list(differences.getdata()) # Converts the RGB values into a list.
+data_values = len(rgb_list) # Gets the total number of pixels in the image.
+print("Total number of pixels in the image: " + str(data_values)) # Prints the total
+pixels.
+for item in rgb_list: # Goes through the RGB list.
+if item[0] < 10 or item[1] < 10 or item[2] < 10: # If any of the RGB values is less
+than 10...
+data_values -= 1 # ...the pixel is removed from the total count.
+print("Total number of pixels with fungi in the image: " + str(data_values)) # The final
+number of pixels where fungi was detected. "Get help!... etc, etc."
