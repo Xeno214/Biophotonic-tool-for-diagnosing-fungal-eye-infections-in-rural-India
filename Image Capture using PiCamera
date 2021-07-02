@@ -1,0 +1,10 @@
+from picamera import PiCamera
+import time
+import datetime
+camera = PiCamera()
+camera.start_preview()
+time.sleep(5) # Not sure if really needed.
+today = datetime.datetime.today()
+timestamp = today.strftime('%y-%m-%d-%-H-%-M-%-S')
+camera.capture("/home/pi/Desktop/fungi_picture_" + timestamp + ".jpg")
+camera.stop_preview()
